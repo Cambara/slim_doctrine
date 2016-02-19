@@ -1,13 +1,21 @@
 <?php
 namespace App\login\controller;
-use App\login\model\entity\User;
+use App\login\model\repository\LoginRepository;
 
 class LoginController
 {
-
-	public function listUser()
+    private $repository;
+	function __construct()
 	{
-		global $entityManager;
-		return $entityManager->getRepository('App\login\model\entity\User')->findAll();
+        $this->repository = new LoginRepository();
 	}
+
+	public function getList()
+	{
+        return $this->repository->getList();
+	}
+    public function getLogin($id)
+    {
+        return $this->repository->getLogin($id);
+    }
 }
