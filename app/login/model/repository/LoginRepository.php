@@ -8,7 +8,11 @@ class LoginRepository
     public function put(Login $login)
     {
         global $entityManager;
-        $entityManager->persist($login);
+        if($login->getId() != ''){
+            $login = $entityManager->merge($login);
+        }else{
+            $entityManager->persist($login);
+        }
         $entityManager->flush();
         return $login;
     }
@@ -16,12 +20,11 @@ class LoginRepository
     {
         global $entityManager;
         $login = $this->getLogin($id);
-        $flag = false;
         if($login != null){
-            $entityManager->remove();
-            $flag = true;
+            $entityManager->remove($login);
+            $entityManager->flush();
         }
-        return $flag;
+        return $login;
 
     }
     public function getList()
